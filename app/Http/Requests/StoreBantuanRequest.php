@@ -6,23 +6,26 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreBantuanRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            //
+            'penyandang_id' => 'required',
+            'jenis' => 'required',
+            'detail' => 'required',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'penyandang_id.required' => 'Mohon isi kolom Penyandang.',
+            'jenis.required' => 'Mohon isi kolom Jenis.',
+            'detail.required' => 'Mohon isi kolom detail.',
         ];
     }
 }

@@ -1,4 +1,8 @@
-@extends('layouts.dashboard')
+@extends('layouts.dashboard', [
+	'breadcrumbs' => [
+			'Dashboard' => '#',
+	],
+])
 @section('title', 'Dasbor')
 @push('css')
   <link rel="stylesheet" href="{{ asset('css/iconly.css') }}">

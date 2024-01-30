@@ -5,60 +5,50 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreBantuanRequest;
 use App\Http\Requests\UpdateBantuanRequest;
 use App\Models\Bantuan;
+use App\Models\Penyandang;
 
 class BantuanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $bantuan = Bantuan::with('penyandang')->get();
+
+        return view('pages.dashboard.bantuan.index', compact('bantuan'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $penyandang = Penyandang::all();
+
+        return view('pages.dashboard.bantuan.create', compact('penyandang'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreBantuanRequest $request)
     {
-        //
+        try {
+            Bantuan::create($request->all());
+
+            return redirect()->back()->with('success', 'Data berhasil ditambahkan.');
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors($th->getMessage())->withInput();
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Bantuan $bantuan)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Bantuan $bantuan)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateBantuanRequest $request, Bantuan $bantuan)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Bantuan $bantuan)
     {
         //

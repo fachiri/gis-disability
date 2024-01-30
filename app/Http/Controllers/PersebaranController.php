@@ -4,29 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePersebaranRequest;
 use App\Http\Requests\UpdatePersebaranRequest;
+use App\Models\Penyandang;
 use App\Models\Persebaran;
 
 class PersebaranController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $penyandang = Penyandang::all();
+
+        return view('pages.dashboard.persebaran.index', compact('penyandang'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StorePersebaranRequest $request)
     {
         //

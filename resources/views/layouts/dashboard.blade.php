@@ -11,6 +11,10 @@
 		<link rel="preconnect" href="https://fonts.bunny.net">
 		<link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
 
+		{{-- Leaflet --}}
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+		<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
 		{{-- Styles --}}
 		<link rel="shortcut icon" href="./assets/compiled/svg/favicon.svg" type="image/x-icon">
 		<link rel="shortcut icon"
@@ -33,7 +37,7 @@
 				</header>
 
 				<div class="page-heading d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
-					<h3 class="mb-2 mb-md-0">@yield('title')</h3>
+					<h3 class="mb-md-0 mb-2">@yield('title')</h3>
 					<nav aria-label="breadcrumb">
 						<ol class="breadcrumb mb-0">
 							@foreach ($breadcrumbs as $name => $url)

@@ -21,16 +21,15 @@ return new class extends Migration
             $table->string('foto_kk');
             $table->string('no_kk', 16);
             $table->string('alamat');
-            $table->string('jenis_disabilitas', 50);
+            $table->string('jenis_disabilitas', 50)->nullable();
             $table->string('pendidikan_terakhir', 50);
-            $table->string('keterampilan', 50);
-            $table->string('usaha', 50);
+            $table->string('keterampilan', 50)->nullable();
+            $table->string('usaha', 50)->nullable();
             $table->string('status_pernikahan', 50);
             $table->string('latitude');
             $table->string('longitude');
-            $table->string('keterangan_meninggal', 50);
-            $table->string('keterangan_sembuh', 50);
-            $table->foreignId('bantuan_id')->constrained('bantuans')->onDelete('cascade');
+            $table->string('keterangan_meninggal', 50)->nullable();
+            $table->string('keterangan_sembuh', 50)->nullable();
             $table->timestamps();
         });
     }

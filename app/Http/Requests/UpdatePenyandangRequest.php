@@ -6,23 +6,33 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdatePenyandangRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            //
+            'nama' => 'required|string|max:255',
+            'no_induk_disabilitas' => 'required|string|max:255',
+            'nik' => 'required|string|max:16',
+            'no_kk' => 'required|string|max:16',
+            'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+            'pendidikan_terakhir' => 'required|in:Tidak Sekolah,SD,SMP,SMA/SMK,Diploma (D1-D3),Sarjana (S1),Magister (S2),Doktor (S3)',
+            'status_pernikahan' => 'required|in:Belum Menikah,Sudah Menikah',
+            'keterampilan' => 'nullable|string|max:255',
+            'usaha' => 'nullable|string|max:255',
+            'kontak' => 'required|string|max:14',
+            'alamat' => 'required|string',
+            'latitude' => 'required',
+            'longitude' => 'required',
+            'jenis_disabilitas' => 'nullable|string|max:255',
+            'keterangan_meninggal' => 'nullable|string|max:255',
+            'keterangan_sembuh' => 'nullable|string|max:255',
+            'foto_diri' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'foto_ktp' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'foto_kk' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }
 }
