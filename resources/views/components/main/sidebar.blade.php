@@ -16,11 +16,11 @@
 	                'subItems' => [
 	                    (object) [
 	                        'label' => 'Relawan',
-	                        'link' => route('master.relawan.index'),
+	                        'link' => route('dashboard.master.relawan.index'),
 	                    ],
 											(object) [
 	                        'label' => 'Penyandang',
-	                        'link' => route('master.penyandang.index'),
+	                        'link' => route('dashboard.master.penyandang.index'),
 	                    ],
 	                ],
 	            ],
@@ -28,13 +28,13 @@
 	                'label' => 'Persebaran',
 	                'icon' => 'bi bi-map-fill',
 	                'hasSubItems' => false,
-	                'link' => route('persebaran.index'),
+	                'link' => route('dashboard.persebaran.index'),
 	            ],
 							(object) [
 	                'label' => 'Bantuan',
 	                'icon' => 'bi bi-hand-thumbs-up-fill',
 	                'hasSubItems' => false,
-	                'link' => route('bantuan.index'),
+	                'link' => route('dashboard.bantuan.index'),
 	            ],
 	        ],
 	    ],
@@ -44,12 +44,6 @@
 	            (object) [
 	                'label' => 'Pengaturan',
 	                'icon' => 'bi bi-gear-fill',
-	                'hasSubItems' => false,
-	                'link' => '#',
-	            ],
-              (object) [
-	                'label' => 'Keluar',
-	                'icon' => 'bi bi-door-closed-fill',
 	                'hasSubItems' => false,
 	                'link' => '#',
 	            ]
@@ -63,7 +57,12 @@
 		<div class="sidebar-header position-relative">
 			<div class="d-flex justify-content-between align-items-center">
 				<div class="logo">
-					<a href="index.html"><img src="{{ asset('images/mazer.svg') }}" alt="Logo" srcset=""></a>
+					<a href="{{ route('dashboard.index') }}">
+						<div class="d-flex align-items-center gap-2">
+							{{-- <img src="{{ asset('images/default/jejakode.svg') }}" alt="Logo" srcset=""> --}}
+							<span class="fs-5 text-primary">{{ config('app.name') }}</span>
+						</div>
+					</a>
 				</div>
 				<div class="theme-toggle d-flex align-items-center mt-2 gap-2">
 					<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--system-uicons" width="20" height="20" preserveAspectRatio="xMidYMid meet" viewBox="0 0 21 21">
@@ -119,6 +118,15 @@
 						@endif
 					@endforeach
 				@endforeach
+				<form id="logoutForm" action="{{ route('auth.logout') }}" method="POST">
+					@csrf
+					<li class="sidebar-item">
+						<a href="javascript::void" class="sidebar-link" onclick="document.getElementById('logoutForm').submit();">
+							<i class="bi bi-door-closed-fill"></i>
+							<span>Keluar</span>
+						</a>
+					</li>
+				</form>
 			</ul>
 		</div>
 	</div>

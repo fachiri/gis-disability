@@ -1,7 +1,7 @@
 @extends('layouts.dashboard', [
     'breadcrumbs' => [
         'Dashboard' => route('dashboard.index'),
-        'Master Penyandang' => route('master.penyandang.index'),
+        'Master Penyandang' => route('dashboard.master.penyandang.index'),
         'Tambah Data' => '#',
     ],
 ])
@@ -11,7 +11,7 @@
 		<div class="col-12">
 			<div class="card">
 				<div class="card-body py-4-5 px-4">
-					<form action="{{ route('master.penyandang.store') }}" method="POST" enctype="multipart/form-data">
+					<form action="{{ route('dashboard.master.penyandang.store') }}" method="POST" enctype="multipart/form-data">
 						@csrf
 						<div class="mb-5">
 							<h5>Personal</h5>
@@ -21,12 +21,12 @@
 							<x-form.input type="text" name="no_kk" label="Nomor Kartu Keluarga" maxlength="16" />
 							<x-form.select name="jenis_kelamin" label="Jenis Kelamin" :options="[
 							    (object) [
-							        'label' => 'Laki-laki',
-							        'value' => 'Laki-laki',
+							        'label' => App\Constants\UserGender::MALE,
+							        'value' => App\Constants\UserGender::MALE,
 							    ],
 							    (object) [
-							        'label' => 'Perempuan',
-							        'value' => 'Perempuan',
+							        'label' => App\Constants\UserGender::FEMALE,
+							        'value' => App\Constants\UserGender::FEMALE,
 							    ],
 							]" />
 							<x-form.select name="pendidikan_terakhir" label="Pendidikan Terakhir" :options="[
@@ -117,13 +117,15 @@
 	<script src="{{ asset('js/custom/format-phone.js') }}"></script>
 	<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 	<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+	<script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.3.1/leaflet-omnivore.min.js'></script>
 	<script>
 		// const mapboxAccessToken = 'pk.eyJ1Ijoia2lraWlzYWEiLCJhIjoiY2wzaWNicXEyMDJxbTNkcGFlbmV0dnp0dSJ9.-wj_2jiCg480pWInHlomAA'
-		var map = L.map('map').setView([0.5400, 123.0600], 13);
+		var map = L.map('map').setView([0.5400, 123.0600], 12);
 		var marker = L.marker([0.5400, 123.0600]).addTo(map);
+		const geoJsonPath = @json(asset('geojson/administrasi_kecamatan_kota_gorontalo.geojson'));
 
 		L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-			maxZoom: 19,
+			minZoom: 12,
 			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 		}).addTo(map);
 
@@ -137,6 +139,17 @@
 		// }).addTo(map);
 
 		L.Control.geocoder().addTo(map);
+
+		omnivore.geojson(geoJsonPath)
+			.on('ready', function() {
+				this.eachLayer(function(layer) {
+					layer.setStyle({
+						// fillColor: 'none',
+						fillOpacity: 0.3,
+						weight: .5
+					});
+				});
+			}).addTo(map);
 
 		map.on('click', function(e) {
 			var lat = e.latlng.lat.toFixed(6);

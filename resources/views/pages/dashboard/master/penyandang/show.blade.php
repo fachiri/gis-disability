@@ -1,7 +1,7 @@
 @extends('layouts.dashboard', [
     'breadcrumbs' => [
         'Dashboard' => route('dashboard.index'),
-        'Master Penyandang' => route('master.penyandang.index'),
+        'Master Penyandang' => route('dashboard.master.penyandang.index'),
         $penyandang->nama => '#',
     ],
 ])
@@ -16,11 +16,11 @@
 			<div class="card">
 				<div class="card-body py-4-5 px-4">
 					<div class="d-flex justify-content-end mb-4 gap-2">
-						<a href="{{ route('master.penyandang.edit', $penyandang->uuid) }}" class="btn btn-warning btn-sm">
+						<a href="{{ route('dashboard.master.penyandang.edit', $penyandang->uuid) }}" class="btn btn-warning btn-sm">
 							<i class="bi bi-pencil-square"></i>
 							Edit
 						</a>
-						<x-form.delete :id="$penyandang->uuid" :action="route('master.penyandang.destroy', $penyandang->uuid)" :label="$penyandang->nama" text="Hapus" />
+						<x-form.delete :id="$penyandang->uuid" :action="route('dashboard.master.penyandang.destroy', $penyandang->uuid)" :label="$penyandang->nama" text="Hapus" />
 					</div>
 					<h5 class="mb-4">Informasi</h5>
 					<table class="table-striped table">
@@ -177,6 +177,7 @@
 	<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 	<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
 	<script>
+		// const geoJsonPath = @json(asset('administrasi_kecamatan_kota_gorontalo.geojson'));
 		const penyandang_latitude = @json($penyandang->latitude) ?? 0.5400;
 		const penyandang_longitude = @json($penyandang->longitude) ?? 123.0600;
 		let map = L.map('map').setView([penyandang_latitude, penyandang_longitude], 13);
@@ -188,5 +189,21 @@
 		}).addTo(map);
 
 		L.Control.geocoder().addTo(map);
+
+		// const fetchGeoJson = () => {
+		// 	fetch("./sample.json")
+		// 		.then((res) => {
+		// 			if (!res.ok) {
+		// 				throw new Error(`HTTP error! Status: ${res.status}`);
+		// 			}
+		// 			return res.json();
+		// 		})
+		// 		.then((data) =>
+		// 			console.log(data))
+		// 		.catch((error) =>
+		// 			console.error("Unable to fetch data:", error));
+		// }
+
+		// console.log(geoJsonPath)
 	</script>
 @endpush

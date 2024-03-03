@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Relawan;
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRelawanRequest extends FormRequest
@@ -16,13 +17,15 @@ class StoreRelawanRequest extends FormRequest
     {
         return [
             'nama' => 'required',
+            'username' => 'required|unique:users,username',
+            'gender' => 'required',
             'email' => 'required|email|unique:users,email',
             'kontak' => [
                 'required',
                 function ($attribute, $value, $fail) {
                     $kontakWithoutDash = str_replace('-', '', $value);
     
-                    if (Relawan::where('kontak', $kontakWithoutDash)->exists()) {
+                    if (User::where('phone', $kontakWithoutDash)->exists()) {
                         $fail("Kontak sudah digunakan.");
                     }
 

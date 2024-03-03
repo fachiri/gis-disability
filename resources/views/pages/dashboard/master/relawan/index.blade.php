@@ -14,7 +14,7 @@
 		<div class="col-12">
 			<div class="card">
 				<div class="card-header d-flex justify-content-between pb-0">
-					<a href="{{ route('master.relawan.create') }}" class="btn btn-primary">
+					<a href="{{ route('dashboard.master.relawan.create') }}" class="btn btn-primary">
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="h-6 w-6">
 							<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
 						</svg>
@@ -35,16 +35,16 @@
 							@foreach ($relawan as $item)
 								<tr>
 									<td>{{ $loop->iteration }}</td>
-									<td>{{ $item->nama }}</td>
-									<td>{{ formatPhone($item->kontak) }}</td>
+									<td>{{ $item->user->name }}</td>
+									<td>{{ formatPhone($item->user->phone) }}</td>
 									<td style="white-space: nowrap">
-										<a href="{{ route('master.relawan.show', $item->uuid) }}" class="btn btn-success btn-sm">
+										<a href="{{ route('dashboard.master.relawan.show', $item->uuid) }}" class="btn btn-success btn-sm">
 											<i class="bi bi-list-ul"></i>
 										</a>
-										<a href="{{ route('master.relawan.edit', $item->uuid) }}" class="btn btn-warning btn-sm">
+										<a href="{{ route('dashboard.master.relawan.edit', $item->uuid) }}" class="btn btn-warning btn-sm">
 											<i class="bi bi-pencil-square"></i>
 										</a>
-										<x-form.delete :id="$item->uuid" :action="route('master.relawan.destroy', $item->uuid)" :label="$item->nama" />
+										<x-form.delete :id="$item->uuid" :action="route('dashboard.master.relawan.destroy', $item->uuid)" :label="$item->nama" />
 									</td>
 								</tr>
 							@endforeach

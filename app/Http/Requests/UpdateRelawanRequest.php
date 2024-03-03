@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Relawan;
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -17,18 +18,20 @@ class UpdateRelawanRequest extends FormRequest
     {
         return [
             'nama' => 'required',
+            'username' => 'required|unique:users,username,' . $this->relawan->user->id,
+            'gender' => 'required',
             'email' => [
                 'required',
                 'email',
-                Rule::unique('users', 'email')->ignore($this->relawan->id),
+                Rule::unique('users', 'email')->ignore($this->relawan->user->id),
             ],
             'kontak' => [
                 'required',
                 function ($attribute, $value, $fail) {
                     $kontakWithoutDash = str_replace('-', '', $value);
 
-                    if ($userKontak = Relawan::where('kontak', $kontakWithoutDash)->first()) {
-                        if ($userKontak->user_id != $this->relawan->id) {
+                    if ($userKontak = User::where('phone', $kontakWithoutDash)->first()) {
+                        if ($userKontak->id != $this->relawan->user->id) {
                             $fail("Kontak sudah digunakan.");
                         }
                     }

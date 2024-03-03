@@ -1,7 +1,7 @@
 @extends('layouts.dashboard', [
     'breadcrumbs' => [
         'Dashboard' => route('dashboard.index'),
-        'Bantuan' => route('bantuan.index'),
+        'Bantuan' => route('dashboard.bantuan.index'),
         'Tambah Data' => '#',
     ],
 ])
@@ -11,7 +11,7 @@
 		<div class="col-12">
 			<div class="card">
 				<div class="card-body py-4-5 px-4">
-					<form action="{{ route('bantuan.store') }}" method="POST">
+					<form action="{{ route('dashboard.bantuan.store') }}" method="POST">
 						@csrf
 						<x-form.select name="penyandang_id" label="Penyandang" :options="$penyandang->map(function ($penyandang) {
 						    return (object) ['label' => $penyandang->nama, 'value' => $penyandang->id];

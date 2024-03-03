@@ -29,7 +29,6 @@ class Relawan extends Model
             if (!$model->exists) {
                 $model->uuid = (string) Uuid::uuid4();
             }
-            $model->kontak = str_replace('-', '', $model->kontak);
         });
     }
 

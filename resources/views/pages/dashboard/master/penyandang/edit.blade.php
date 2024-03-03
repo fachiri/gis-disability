@@ -1,7 +1,7 @@
 @extends('layouts.dashboard', [
     'breadcrumbs' => [
         'Dashboard' => route('dashboard.index'),
-        'Master Penyandang' => route('master.penyandang.index'),
+        'Master Penyandang' => route('dashboard.master.penyandang.index'),
         'Edit' => '#',
     ],
 ])
@@ -12,14 +12,14 @@
 			<div class="card">
 				<div class="card-body py-4-5 px-4">
 					<div class="d-flex justify-content-end mb-4 gap-2">
-						<a href="{{ route('master.penyandang.show', $penyandang->uuid) }}" class="btn btn-success btn-sm">
+						<a href="{{ route('dashboard.master.penyandang.show', $penyandang->uuid) }}" class="btn btn-success btn-sm">
 							<i class="bi bi-list-ul"></i>
 							Detail
 						</a>
-						<x-form.delete :id="$penyandang->uuid" :action="route('master.penyandang.destroy', $penyandang->uuid)" :label="$penyandang->nama" text="Hapus" />
+						<x-form.delete :id="$penyandang->uuid" :action="route('dashboard.master.penyandang.destroy', $penyandang->uuid)" :label="$penyandang->nama" text="Hapus" />
 					</div>
 					<h5 class="mb-4">Form Penyandang</h5>
-					<form action="{{ route('master.penyandang.update', $penyandang->uuid) }}" method="POST" enctype="multipart/form-data">
+					<form action="{{ route('dashboard.master.penyandang.update', $penyandang->uuid) }}" method="POST" enctype="multipart/form-data">
 						@csrf
 						@method('PUT')
 						<div class="mb-5">
@@ -30,12 +30,12 @@
 							<x-form.input type="text" name="no_kk" label="Nomor Kartu Keluarga" maxlength="16" :value="$penyandang->no_kk" />
 							<x-form.select name="jenis_kelamin" label="Jenis Kelamin" :value="$penyandang->jenis_kelamin" :options="[
 							    (object) [
-							        'label' => 'Laki-laki',
-							        'value' => 'Laki-laki',
+							        'label' => App\Constants\UserGender::MALE,
+							        'value' => App\Constants\UserGender::MALE,
 							    ],
 							    (object) [
-							        'label' => 'Perempuan',
-							        'value' => 'Perempuan',
+							        'label' => App\Constants\UserGender::FEMALE,
+							        'value' => App\Constants\UserGender::FEMALE,
 							    ],
 							]" />
 							<x-form.select name="pendidikan_terakhir" label="Pendidikan Terakhir" :value="$penyandang->pendidikan_terakhir" :options="[
@@ -109,9 +109,9 @@
 						</div>
 						<div>
 							<h5>Upload</h5>
-							<x-form.input type="file" name="foto_diri" label="Foto Penyandang" addon-label='<i class="bi bi-image-fill"></i>' :addon-link="asset('storage/foto_diri/'. $penyandang->foto_diri)" />
-							<x-form.input type="file" name="foto_ktp" label="Foto Kartu Tanda Penduduk"  addon-label='<i class="bi bi-image-fill"></i>' :addon-link="asset('storage/foto_ktp/'. $penyandang->foto_ktp)" />
-							<x-form.input type="file" name="foto_kk" label="Foto Kartu Keluarga"  addon-label='<i class="bi bi-image-fill"></i>' :addon-link="asset('storage/foto_kk/'. $penyandang->foto_kk)" />
+							<x-form.input type="file" name="foto_diri" label="Foto Penyandang" addon-label='<i class="bi bi-image-fill"></i>' :addon-link="asset('storage/foto_diri/' . $penyandang->foto_diri)" />
+							<x-form.input type="file" name="foto_ktp" label="Foto Kartu Tanda Penduduk" addon-label='<i class="bi bi-image-fill"></i>' :addon-link="asset('storage/foto_ktp/' . $penyandang->foto_ktp)" />
+							<x-form.input type="file" name="foto_kk" label="Foto Kartu Keluarga" addon-label='<i class="bi bi-image-fill"></i>' :addon-link="asset('storage/foto_kk/' . $penyandang->foto_kk)" />
 						</div>
 						<div class="pt-3">
 							<button type="submit" class="btn btn-primary">Submit</button>

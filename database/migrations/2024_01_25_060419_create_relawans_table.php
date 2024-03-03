@@ -11,8 +11,6 @@ return new class extends Migration
         Schema::create('relawans', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->unique();
-            $table->string('nama', 50);
-            $table->string('kontak', 12);
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });

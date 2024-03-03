@@ -6,8 +6,7 @@
 ])
 @section('title', 'Persebaran')
 @push('css')
-	<link rel="stylesheet" href="{{ asset('css/extensions/simple-datatable-style.css') }}">
-	<link rel="stylesheet" href="{{ asset('css/extensions/table-datatable.css') }}">
+	<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
 @endpush
 @section('content')
 	<section class="row">
@@ -21,15 +20,23 @@
 	</section>
 @endsection
 @push('scripts')
-	<script src="{{ asset('js/extensions/simple-datatables.js') }}"></script>
-	<script src="{{ asset('js/static/report.js') }}"></script>
 	<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+	<script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.3.1/leaflet-omnivore.min.js'></script>
 	<script>
 		const penyandang = @json($penyandang);
+		const geoJsonPath = @json(asset('geojson/administrasi_kecamatan_kota_gorontalo.geojson'));
 		const route = @json(route('master.penyandang.show', 'uuid'));
 
-		const map = L.map('map').setView([0.5400, 123.0600], 13);
+		const gorontaloBounds = L.latLngBounds(
+			L.latLng(0.596443, 122.990913),
+			L.latLng(0.477865, 123.102922)
+		);
+
+		const map = L.map('map', {
+				maxBounds: gorontaloBounds,
+				maxBoundsViscosity: 1.0
+			})
+			.setView([0.5400, 123.0600], 12);
 
 		penyandang.forEach(e => {
 			const latlng = [e.latitude, e.longitude]
@@ -52,10 +59,21 @@
 		});
 
 		L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-			maxZoom: 19,
+			minZoom: 12,
 			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 		}).addTo(map);
 
 		L.Control.geocoder().addTo(map);
+
+		omnivore.geojson(geoJsonPath)
+			.on('ready', function() {
+				this.eachLayer(function(layer) {
+					layer.setStyle({
+						color: '#000',
+						fillOpacity: 0.3,
+						weight: .5
+					});
+				});
+			}).addTo(map);
 	</script>
 @endpush

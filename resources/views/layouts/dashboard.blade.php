@@ -38,17 +38,29 @@
 
 				<div class="page-heading d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
 					<h3 class="mb-md-0 mb-2">@yield('title')</h3>
-					<nav aria-label="breadcrumb">
-						<ol class="breadcrumb mb-0">
-							@foreach ($breadcrumbs as $name => $url)
-								@if (!$loop->last)
-									<li class="breadcrumb-item"><a href="{{ $url }}">{{ $name }}</a></li>
-								@else
-									<li class="breadcrumb-item active" aria-current="page">{{ $name }}</li>
-								@endif
-							@endforeach
-						</ol>
-					</nav>
+					@if (Request::is('dashboard'))
+						<div class="d-flex align-items-center">
+							<div class="avatar avatar-lg">
+								<img src="{{ asset(auth()->user()->avatar ? 'storage/uploads/avatars/' . auth()->user()->avatar : 'images/default/profile-0.jpg') }}" style="object-fit: cover">
+							</div>
+							<div class="ms-3">
+								<h6 class="mb-0 font-bold">{{ auth()->user()->name }}</h6>
+								<small class="text-muted">{{ '@' . auth()->user()->username }}</small>
+							</div>
+						</div>
+					@else
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb mb-0">
+								@foreach ($breadcrumbs as $name => $url)
+									@if (!$loop->last)
+										<li class="breadcrumb-item"><a href="{{ $url }}">{{ $name }}</a></li>
+									@else
+										<li class="breadcrumb-item active" aria-current="page">{{ $name }}</li>
+									@endif
+								@endforeach
+							</ol>
+						</nav>
+					@endif
 				</div>
 
 				<div class="page-content">
@@ -59,12 +71,12 @@
 				<footer>
 					<div class="footer clearfix text-muted mb-0">
 						<div class="float-start">
-							<p>2023 &copy; Mazer</p>
+							<p>2024 &copy; {{ config('app.name') }}</p>
 						</div>
-						<div class="float-end">
+						{{-- <div class="float-end">
 							<p>Crafted with <span class="text-danger"><i class="bi bi-heart-fill icon-mid"></i></span>
 								by <a href="https://saugi.me">Saugi</a></p>
-						</div>
+						</div> --}}
 					</div>
 				</footer>
 			</div>

@@ -1,7 +1,7 @@
 @extends('layouts.dashboard', [
     'breadcrumbs' => [
         'Dashboard' => route('dashboard.index'),
-        'Master Relawan' => route('master.relawan.index'),
+        'Master Relawan' => route('dashboard.master.relawan.index'),
         $relawan->nama => '#',
     ],
 ])
@@ -12,11 +12,11 @@
 			<div class="card">
 				<div class="card-body py-4-5 px-4">
           <div class="d-flex gap-2 mb-4 justify-content-end">
-            <a href="{{ route('master.relawan.edit', $relawan->uuid) }}" class="btn btn-warning btn-sm">
+            <a href="{{ route('dashboard.master.relawan.edit', $relawan->uuid) }}" class="btn btn-warning btn-sm">
               <i class="bi bi-pencil-square"></i>
               Edit
             </a>
-            <x-form.delete :id="$relawan->uuid" :action="route('master.relawan.destroy', $relawan->uuid)" :label="$relawan->nama" text="Hapus" />
+            <x-form.delete :id="$relawan->uuid" :action="route('dashboard.master.relawan.destroy', $relawan->uuid)" :label="$relawan->nama" text="Hapus" />
           </div>
           <h5 class="mb-4">Informasi</h5>
 					<table class="table-striped table">

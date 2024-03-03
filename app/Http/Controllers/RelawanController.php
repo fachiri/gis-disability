@@ -25,14 +25,16 @@ class RelawanController extends Controller
     {
         try {
             $user = User::create([
+                'name' => $request->nama,
                 'email' => $request->email,
-                'password' => explode("@", $request->email)[0]
+                'username' => $request->username,
+                'password' => $request->username,
+                'gender' => $request->gender,
+                'phone' => $request->kontak
             ]);
 
             Relawan::create([
                 'user_id' => $user->id,
-                'nama' => $request->nama,
-                'kontak' => $request->kontak
             ]);
 
             return redirect()->back()->with('success', 'Data berhasil ditambahkan.');
@@ -54,11 +56,11 @@ class RelawanController extends Controller
     public function update(UpdateRelawanRequest $request, Relawan $relawan)
     {
         try {
-            $relawan->nama = $request->nama;
-            $relawan->kontak = $request->kontak;
-            $relawan->save();
-
+            $relawan->user->name = $request->nama;
+            $relawan->user->username = $request->username;
+            $relawan->user->phone = $request->kontak;
             $relawan->user->email = $request->email;
+            $relawan->user->gender = $request->gender;
             $relawan->user->save();
 
             return redirect()->back()->with('success', 'Data berhasil diedit.');
@@ -72,7 +74,7 @@ class RelawanController extends Controller
         try {
             $relawan->delete();
 
-            return redirect()->route('master.relawan.index')->with('success', 'Data berhasil dihapus.');
+            return redirect()->route('dashboard.master.relawan.index')->with('success', 'Data berhasil dihapus.');
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors($th->getMessage())->withInput();
         }
