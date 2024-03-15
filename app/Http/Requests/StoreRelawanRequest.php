@@ -16,6 +16,7 @@ class StoreRelawanRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'district_id' => 'required',
             'nama' => 'required',
             'username' => 'required|unique:users,username',
             'gender' => 'required',
@@ -40,6 +41,7 @@ class StoreRelawanRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'district_id.required' => 'Mohon isi kolom Kecamatan.',
             'nama.required' => 'Mohon isi kolom Nama.',
             'email.required' => 'Mohon isi kolom Email.',
             'email.email' => 'Format Email tidak valid.',

@@ -13,6 +13,12 @@
 				<div class="card-body py-4-5 px-4">
 					<form action="{{ route('dashboard.master.relawan.store') }}" method="POST">
 						@csrf
+						<x-form.select name="district_id" label="Kecamatan" :options="$districts->map(function ($district) {
+						    return (object) [
+						        'label' => $district->name,
+						        'value' => $district->id,
+						    ];
+						})" />
 						<x-form.input name="nama" label="Nama Relawan" />
 						<x-form.input type="email" name="email" label="Email" />
 						<x-form.input name="username" label="Username" />

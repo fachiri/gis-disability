@@ -80,7 +80,14 @@
 							<h5>Kontak</h5>
 							<x-form.input type="text" name="kontak" label="Nomor HP" format="phone" maxlength="14" />
 							<x-form.textarea type="text" name="alamat" label="Alamat" />
+							<x-form.select name="district_id" label="Kecamatan" :options="$districts->map(function ($district) {
+							    return (object) [
+							        'label' => $district->name,
+							        'value' => $district->id,
+							    ];
+							})" />
 							<div class="mb-3">
+								<label class="form-label">Peta</label>
 								<div id="map" style="height: 280px"></div>
 							</div>
 							<div class="row">
@@ -119,46 +126,68 @@
 	<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
 	<script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.3.1/leaflet-omnivore.min.js'></script>
 	<script>
-		// const mapboxAccessToken = 'pk.eyJ1Ijoia2lraWlzYWEiLCJhIjoiY2wzaWNicXEyMDJxbTNkcGFlbmV0dnp0dSJ9.-wj_2jiCg480pWInHlomAA'
+		const inputKecamatan = document.querySelector('#district_id');
 		var map = L.map('map').setView([0.5400, 123.0600], 12);
 		var marker = L.marker([0.5400, 123.0600]).addTo(map);
-		const geoJsonPath = @json(asset('geojson/administrasi_kecamatan_kota_gorontalo.geojson'));
+		const geoJsonPath = @json(asset('geojson/administrasi_kecamatan_kota_gorontalo_2.geojson'));
+		var currentLayer = null;
 
-		L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-			minZoom: 12,
-			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-		}).addTo(map);
+		inputKecamatan.addEventListener('change', e => {
+			const selectedOption = e.target.selectedOptions[0];
+			const value = selectedOption.value;
+			const text = selectedOption.textContent;
 
-		// L.tileLayer(`https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=${mapboxAccessToken}`, {
-		// 	maxZoom: 19,
-		// 	attribution: 'Map data &copy; <a href="https://www.mapbox.com/">Mapbox</a>',
-		// 	id: 'mapbox/streets-v9',
-		// 	tileSize: 512,
-		// 	zoomOffset: -1,
-		// 	accessToken: mapboxAccessToken
-		// }).addTo(map);
+			if (currentLayer) {
+				currentLayer.setStyle({
+					fillOpacity: 0.3,
+					weight: 1
+				});
+			}
 
-		L.Control.geocoder().addTo(map);
+			map.eachLayer(layer => {
+				if (layer.feature && layer.feature.properties && layer.feature.properties.NAMOBJ === text) {
+					currentLayer = layer;
+					layer.setStyle({
+						fillOpacity: 0.5,
+						weight: 2
+					});
+					map.fitBounds(layer.getBounds());
+				}
+			});
+		});
 
 		omnivore.geojson(geoJsonPath)
 			.on('ready', function() {
 				this.eachLayer(function(layer) {
 					layer.setStyle({
-						// fillColor: 'none',
 						fillOpacity: 0.3,
-						weight: .5
+						weight: 1
 					});
 				});
 			}).addTo(map);
 
 		map.on('click', function(e) {
-			var lat = e.latlng.lat.toFixed(6);
-			var lng = e.latlng.lng.toFixed(6);
+			if (currentLayer) {
+				if (currentLayer.getBounds().contains(e.latlng)) {
+					var lat = e.latlng.lat.toFixed(6);
+					var lng = e.latlng.lng.toFixed(6);
 
-			document.getElementById('latitude').value = lat;
-			document.getElementById('longitude').value = lng;
+					document.getElementById('latitude').value = lat;
+					document.getElementById('longitude').value = lng;
 
-			marker.setLatLng(e.latlng);
+					marker.setLatLng(e.latlng);
+				} else {
+					alert(`Titik berada di luar wilayah ${currentLayer.feature.properties.NAMOBJ}.`);
+				}
+			} else {
+				alert('Pilih kecamatan terlebih dahulu.');
+			}
 		});
+
+		L.Control.geocoder().addTo(map);
+		L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			minZoom: 12,
+			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+		}).addTo(map);
 	</script>
 @endpush

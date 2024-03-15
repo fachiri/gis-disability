@@ -55,6 +55,11 @@ class User extends Authenticatable
         return $this->hasOne(Relawan::class);
     }
 
+    public function admin(): HasOne
+    {
+        return $this->hasOne(Admin::class);
+    }
+
     public function manager(): HasOne
     {
         return $this->hasOne(Manager::class);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRelawanRequest;
 use App\Http\Requests\UpdateRelawanRequest;
+use App\Models\District;
 use App\Models\Relawan;
 use App\Models\User;
 
@@ -18,7 +19,9 @@ class RelawanController extends Controller
 
     public function create()
     {
-        return view('pages.dashboard.master.relawan.create');
+        $districts = District::all();
+
+        return view('pages.dashboard.master.relawan.create', compact('districts'));
     }
 
     public function store(StoreRelawanRequest $request)
@@ -30,11 +33,12 @@ class RelawanController extends Controller
                 'username' => $request->username,
                 'password' => $request->username,
                 'gender' => $request->gender,
-                'phone' => $request->kontak
+                'phone' => $request->kontak,
             ]);
 
             Relawan::create([
                 'user_id' => $user->id,
+                'district_id' => $request->district_id,
             ]);
 
             return redirect()->back()->with('success', 'Data berhasil ditambahkan.');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePenyandangRequest;
 use App\Http\Requests\UpdatePenyandangRequest;
+use App\Models\District;
 use App\Models\Penyandang;
 
 class PenyandangController extends Controller
@@ -17,7 +18,9 @@ class PenyandangController extends Controller
 
     public function create()
     {
-        return view('pages.dashboard.master.penyandang.create');
+        $districts = District::all();
+
+        return view('pages.dashboard.master.penyandang.create', compact('districts'));
     }
 
     public function store(StorePenyandangRequest $request)
@@ -28,6 +31,7 @@ class PenyandangController extends Controller
             $foto_kk = $request->file('foto_kk')->store('public/foto_kk');
 
             Penyandang::create([
+                'district_id' => $request->district_id,
                 'nama' => $request->nama,
                 'no_induk_disabilitas' => $request->no_induk_disabilitas,
                 'nik' => $request->nik,

@@ -8,17 +8,16 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('relawans', function (Blueprint $table) {
+        Schema::create('districts', function (Blueprint $table) {
             $table->id();
-            $table->uuid('uuid')->unique();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('district_id')->constrained('districts')->onDelete('cascade');
+            $table->uuid();
+            $table->string('name', 32);
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('relawans');
+        Schema::dropIfExists('districts');
     }
 };

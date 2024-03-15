@@ -30,6 +30,7 @@ return new class extends Migration
             $table->string('longitude');
             $table->string('keterangan_meninggal', 50)->nullable();
             $table->string('keterangan_sembuh', 50)->nullable();
+            $table->foreignId('district_id')->constrained('districts')->onDelete('cascade');
             $table->timestamps();
         });
     }

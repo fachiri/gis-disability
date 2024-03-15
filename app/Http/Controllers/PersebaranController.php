@@ -4,16 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePersebaranRequest;
 use App\Http\Requests\UpdatePersebaranRequest;
+use App\Models\District;
 use App\Models\Penyandang;
 use App\Models\Persebaran;
+use App\Models\Relawan;
 
 class PersebaranController extends Controller
 {
     public function index()
     {
         $penyandang = Penyandang::all();
+        $relawan = Relawan::all();
+        $districts = District::with('relawan', 'penyandang')->get();
 
-        return view('pages.dashboard.persebaran.index', compact('penyandang'));
+        return view('pages.dashboard.persebaran.index', compact('penyandang', 'districts', 'relawan'));
     }
 
     public function create()
@@ -26,9 +30,6 @@ class PersebaranController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Persebaran $persebaran)
     {
         //

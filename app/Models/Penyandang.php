@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Ramsey\Uuid\Uuid;
 
@@ -30,7 +31,8 @@ class Penyandang extends Model
         'keterangan_sembuh',
         'foto_diri',
         'foto_ktp',
-        'foto_kk'
+        'foto_kk',
+        'district_id'
     ];
 
     public function getRouteKeyName(): string
@@ -52,5 +54,10 @@ class Penyandang extends Model
     public function bantuan(): HasMany
     {
         return $this->hasMany(Bantuan::class);
+    }
+
+    public function district(): BelongsTo
+    {
+        return $this->belongsTo(District::class);
     }
 }
