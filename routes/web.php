@@ -1,6 +1,7 @@
 <?php
 
 use App\Constants\UserRole;
+use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BantuanController;
 use App\Http\Controllers\DashboardController;
@@ -32,6 +33,7 @@ Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(func
     Route::get('/penyandang/{penyandang}', [PenyandangController::class, 'show'])->name('penyandang.show');
     Route::resource('/persebaran', PersebaranController::class)->names('persebaran');
     Route::resource('/bantuan', BantuanController::class)->names('bantuan');
+    Route::resource('/activity', ActivityController::class)->names('activity');
     Route::patch('/bantuan/{bantuan}/received', [BantuanController::class, 'received'])->name('bantuan.received');
     Route::prefix('security')->name('security.')->middleware([])->group(function () {
         Route::get('/', [SecurityController::class, 'index'])->name('index');

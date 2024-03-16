@@ -8,15 +8,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Ramsey\Uuid\Uuid;
 
-class Relawan extends Model
+class Activity extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'district_id',
-        'user_id',
-        'nama',
-        'kontak'
+        'relawan_id',
+        'name',
+        'location',
     ];
 
     public function getRouteKeyName(): string
@@ -34,18 +33,13 @@ class Relawan extends Model
         });
     }
 
-    public function user(): BelongsTo
+    public function relawan(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Relawan::class);
     }
 
-    public function district(): BelongsTo
+    public function documentations(): HasMany
     {
-        return $this->belongsTo(District::class);
-    }
-
-    public function activities(): HasMany
-    {
-        return $this->hasMany(Activity::class);
+        return $this->hasMany(Documentation::class);
     }
 }

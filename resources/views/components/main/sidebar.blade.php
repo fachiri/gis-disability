@@ -49,6 +49,13 @@
 	                'hasSubItems' => false,
 	                'link' => route('dashboard.bantuan.index'),
 	            ],
+							(object) [
+									'roles' => [$_RELAWAN],
+	                'label' => 'Kegiatan',
+	                'icon' => 'bi bi-person-video2',
+	                'hasSubItems' => false,
+	                'link' => route('dashboard.activity.index'),
+	            ],
 	        ],
 	    ],
 	    (object) [
