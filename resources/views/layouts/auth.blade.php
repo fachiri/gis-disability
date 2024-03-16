@@ -34,31 +34,7 @@
 	</head>
 
 	<body>
-		<section class="">
-			<div class="auth-container px-md-5 text-lg-start d-flex align-items-center px-4 text-center">
-				<div class="container position-relative">
-					<div class="row gx-lg-5 align-items-center">
-						<div class="col-lg-6 mb-lg-0 mb-5">
-							<h1 class="display-3 fw-bold ls-tight mb-4">
-								Empowering <br />
-								<span class="text-primary">{{ config('app.name') }}</span>
-							</h1>
-							<p class="fw-medium fs-5">
-								{{ config('app.name') }} adalah platform yang memungkinkan relawan dan admin untuk melakukan pendataan penyandang disabilitas, dilengkapi dengan pemetaan (GIS) untuk lokasi penyandang disabilitas dan pengelolaan bantuan kepada penyandang dari relawan di tiap-tiap lokasi tertentu.
-							</p>
-						</div>
-						<div class="col-lg-6 mb-lg-0 mb-5">
-							<div class="card p-md-3">
-								<div class="card-header">
-									<h2>@yield('title')</h2>
-								</div>
-								@yield('content')
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
+		@yield('content')
 
 		<script src="{{ asset('js/dark.js') }}"></script>
 		<script src="{{ asset('js/extensions/perfect-scrollbar.min.js') }}"></script>

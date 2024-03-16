@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginAuthenticateRequest;
+use App\Models\District;
+use App\Models\Penyandang;
+use App\Models\Relawan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
@@ -10,7 +13,11 @@ class AuthController extends Controller
 {
     public function login_index()
     {
-        return view('pages.auth.login');
+        $penyandang = Penyandang::all();
+        $relawan = Relawan::all();
+        $districts = District::with('relawan', 'penyandang')->get();
+
+        return view('pages.auth.login', compact('penyandang', 'districts', 'relawan'));
     }
 
     public function login_authenticate(LoginAuthenticateRequest $request)
