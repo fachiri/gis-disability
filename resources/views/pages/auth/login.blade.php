@@ -1,6 +1,16 @@
 @extends('layouts.auth')
 @section('title', 'Login')
 @section('content')
+	@if ($errors->any())
+		<div class="alert alert-light-danger color-danger alert-dismissible fade show">
+			<ul class="mb-0">
+				@foreach ($errors->all() as $error)
+					<li>{{ $error }}</li>
+				@endforeach
+			</ul>
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+	@endif
 	<form action="{{ route('auth.login.authenticate') }}" method="POST" class="card-body">
 		@csrf
 		<x-form.input type="text" name="username" label="Username / Email" placeholder="Masukkan username / email.." />

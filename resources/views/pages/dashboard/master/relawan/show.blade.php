@@ -40,6 +40,10 @@
 							<th>Kontak</th>
 							<td>{{ formatPhone($relawan->user->phone) }}</td>
 						</tr>
+						<tr>
+							<th>Kecamatan</th>
+							<td>{{ $relawan->district->name }}</td>
+						</tr>
           </table>
 				</div>
 			</div>

@@ -15,7 +15,7 @@
 	                'link' => route('dashboard.index'),
 	            ],
 	            (object) [
-									'roles' => [$_ADMIN],
+	                'roles' => [$_ADMIN],
 	                'label' => 'Master',
 	                'icon' => 'bi bi-database-fill',
 	                'hasSubItems' => true,
@@ -29,6 +29,13 @@
 	                        'link' => route('dashboard.master.penyandang.index'),
 	                    ],
 	                ],
+	            ],
+	            (object) [
+	                'roles' => [$_RELAWAN],
+	                'label' => 'Penyandang',
+	                'icon' => 'bi bi-people-fill',
+	                'hasSubItems' => false,
+	                'link' => route('dashboard.penyandang.index'),
 	            ],
 	            (object) [
 	                'label' => 'Persebaran',
@@ -48,10 +55,10 @@
 	        'title' => 'Lainnya',
 	        'items' => [
 	            (object) [
-	                'label' => 'Pengaturan',
-	                'icon' => 'bi bi-gear-fill',
+	                'label' => 'Keamanan',
+	                'icon' => 'bi bi-lock-fill',
 	                'hasSubItems' => false,
-	                'link' => '#',
+	                'link' => route('dashboard.security.index'),
 	            ],
 	        ],
 	    ],

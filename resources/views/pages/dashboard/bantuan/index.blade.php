@@ -42,11 +42,8 @@
 									<td style="white-space: nowrap">
 										<a href="{{ route('dashboard.bantuan.show', $item->uuid) }}" class="btn btn-success btn-sm">
 											<i class="bi bi-list-ul"></i>
+											Detail
 										</a>
-										<a href="{{ route('dashboard.bantuan.edit', $item->uuid) }}" class="btn btn-warning btn-sm">
-											<i class="bi bi-pencil-square"></i>
-										</a>
-										<x-form.delete :id="$item->uuid" :action="route('dashboard.bantuan.destroy', $item->uuid)" :label="$item->nama" />
 									</td>
 								</tr>
 							@endforeach

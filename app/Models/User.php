@@ -3,6 +3,9 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Constants\UserRole;
+use App\Utils\AuthUtils;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -48,6 +51,21 @@ class User extends Authenticatable
             }
             $model->phone = str_replace('-', '', $model->phone);
         });
+    }
+
+    public function isAdmin(): bool
+    {
+        return AuthUtils::getRole($this) === UserRole::ADMIN;
+    }
+
+    public function isManager(): bool
+    {
+        return AuthUtils::getRole($this) === UserRole::MANAGER;
+    }
+
+    public function isRelawan(): bool
+    {
+        return AuthUtils::getRole($this) === UserRole::RELAWAN;
     }
 
     public function relawan(): HasOne

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('detail');
             $table->string('bukti')->nullable();
             $table->foreignId('penyandang_id')->constrained('penyandangs')->onDelete('cascade');
+            $table->foreignId('relawan_id')->constrained('relawans')->onDelete('cascade');
             $table->timestamps();
         });
     }

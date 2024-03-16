@@ -23,6 +23,11 @@
 		<link rel="stylesheet" href="{{ asset('css/app.css') }}">
 		<link rel="stylesheet" href="{{ asset('css/app-dark.css') }}">
 		@stack('css')
+		<style>
+			#main {
+				background-color: #ebebeb;
+			}
+		</style>
 	</head>
 
 	<body>

@@ -13,6 +13,7 @@ class Bantuan extends Model
 
     protected $fillable = [
         'penyandang_id',
+        'relawan_id',
         'status',
         'jenis',
         'detail',

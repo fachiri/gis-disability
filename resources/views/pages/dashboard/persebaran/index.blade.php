@@ -70,7 +70,7 @@
 			.setView([0.5400, 123.0600], 12);
 
 		const customIcon = L.icon({
-			iconUrl: '{{ asset("icons/penyandang.svg") }}',
+			iconUrl: `{{ asset('icons/penyandang_3.svg') }}`,
 			iconSize: [32, 32],
 			iconAnchor: [16, 32],
 			popupAnchor: [0, -32]
@@ -78,7 +78,9 @@
 
 		penyandang.forEach(e => {
 			const latlng = [e.latitude, e.longitude]
-			let marker = L.marker(latlng, {icon: customIcon}).addTo(map);
+			let marker = L.marker(latlng, {
+				icon: customIcon
+			}).addTo(map);
 			marker.bindPopup(`
 				<div>
 					<div class="d-flex justify-content-between align-items-center gap-1 mb-1">
@@ -95,13 +97,6 @@
 				</div>
 			`);
 		});
-
-		L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-			minZoom: 12,
-			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-		}).addTo(map);
-
-		L.Control.geocoder().addTo(map);
 
 		omnivore.geojson(geoJsonPath)
 			.on('ready', function() {
@@ -136,5 +131,12 @@
 				});
 			})
 			.addTo(map);
+
+		L.Control.geocoder().addTo(map);
+
+		L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			minZoom: 12,
+			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+		}).addTo(map);
 	</script>
 @endpush

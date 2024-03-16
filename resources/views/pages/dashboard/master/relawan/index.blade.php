@@ -27,6 +27,7 @@
 							<tr>
 								<th>No</th>
 								<th>Nama</th>
+								<th>Kecamatan</th>
 								<th>Kontak</th>
 								<th>Aksi</th>
 							</tr>
@@ -35,6 +36,7 @@
 							@foreach ($relawan as $item)
 								<tr>
 									<td>{{ $loop->iteration }}</td>
+									<td>{{ $item->district->name }}</td>
 									<td>{{ $item->user->name }}</td>
 									<td>{{ formatPhone($item->user->phone) }}</td>
 									<td style="white-space: nowrap">

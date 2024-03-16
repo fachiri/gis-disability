@@ -11,7 +11,13 @@ class PenyandangController extends Controller
 {
     public function index()
     {
-        $penyandang = Penyandang::all();
+        $query = Penyandang::query();
+
+        if (auth()->user()->isRelawan()) {
+            $query->where('district_id', auth()->user()->relawan->district->id);
+        }
+
+        $penyandang = $query->get();
 
         return view('pages.dashboard.master.penyandang.index', compact('penyandang'));
     }
@@ -117,7 +123,7 @@ class PenyandangController extends Controller
         try {
             $penyandang->delete();
 
-            return redirect()->route('master.penyandang.index')->with('success', 'Data berhasil dihapus.');
+            return redirect()->route('dashboard.master.penyandang.index')->with('success', 'Data berhasil dihapus.');
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors($th->getMessage())->withInput();
         }

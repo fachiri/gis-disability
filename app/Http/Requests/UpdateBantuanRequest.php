@@ -6,23 +6,20 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateBantuanRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return false;
-    }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            //
+            'jenis' => 'required',
+            'detail' => 'required',
+            'bukti' => 'nullable|file|mimes:jpeg,png,jpg,zip|max:2048'
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'jenis.required' => 'Mohon isi kolom Jenis.',
+            'detail.required' => 'Mohon isi kolom detail.',
         ];
     }
 }
