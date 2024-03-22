@@ -24,6 +24,7 @@ class UpdatePenyandangRequest extends FormRequest
             'keterampilan' => 'nullable|string|max:255',
             'usaha' => 'nullable|string|max:255',
             'kontak' => 'required|string|max:14',
+            'district_id' => 'required',
             'alamat' => 'required|string',
             'latitude' => 'required',
             'longitude' => 'required',

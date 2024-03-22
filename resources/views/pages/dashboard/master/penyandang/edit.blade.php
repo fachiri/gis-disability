@@ -89,7 +89,14 @@
 							<h5>Kontak</h5>
 							<x-form.input type="text" name="kontak" label="Nomor HP" format="phone" maxlength="14" :value="$penyandang->kontak" />
 							<x-form.textarea type="text" name="alamat" label="Alamat" :value="$penyandang->alamat" />
+							<x-form.select name="district_id" label="Kecamatan" :options="$districts->map(function ($district) {
+							    return (object) [
+							        'label' => $district->name,
+							        'value' => $district->id,
+							    ];
+							})" />
 							<div class="mb-3">
+								<label class="form-label">Peta</label>
 								<div id="map" style="height: 280px"></div>
 							</div>
 							<div class="row">
@@ -126,27 +133,84 @@
 	<script src="{{ asset('js/custom/format-phone.js') }}"></script>
 	<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 	<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+	<script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.3.1/leaflet-omnivore.min.js'></script>
 	<script>
+		const inputKecamatan = document.querySelector('#district_id');
+		inputKecamatan.value = @json($penyandang->district_id);
+		const selectedInputKecamatan = inputKecamatan.options[inputKecamatan.selectedIndex]
 		const penyandang_latitude = @json($penyandang->latitude) ?? 0.5400;
 		const penyandang_longitude = @json($penyandang->longitude) ?? 123.0600;
 		let map = L.map('map').setView([penyandang_latitude, penyandang_longitude], 13);
 		let marker = L.marker([penyandang_latitude, penyandang_longitude]).addTo(map);
+		const geoJsonPath = @json(asset('geojson/administrasi_kecamatan_kota_gorontalo_2.geojson'));
+		var currentLayer = null;
+
+		inputKecamatan.addEventListener('change', e => {
+			const selectedOption = e.target.selectedOptions[0];
+			const value = selectedOption.value;
+			const text = selectedOption.textContent;
+
+			if (currentLayer) {
+				currentLayer.setStyle({
+					fillOpacity: 0.3,
+					weight: 1
+				});
+			}
+
+			map.eachLayer(layer => {
+				if (layer.feature && layer.feature.properties && layer.feature.properties.NAMOBJ === text) {
+					currentLayer = layer;
+					layer.setStyle({
+						fillOpacity: 0.5,
+						weight: 2
+					});
+					map.fitBounds(layer.getBounds());
+				}
+			});
+		});
+
+		omnivore.geojson(geoJsonPath)
+			.on('ready', function() {
+				this.eachLayer(function(layer) {
+					layer.setStyle({
+						fillOpacity: 0.3,
+						weight: 1
+					});
+
+					if (layer?.feature?.properties?.NAMOBJ == selectedInputKecamatan.text) {
+						currentLayer = layer;
+						layer.setStyle({
+							fillOpacity: 0.5,
+							weight: 2
+						});
+						map.fitBounds(layer.getBounds());
+					}
+				});
+			}).addTo(map);
+
+		map.on('click', function(e) {
+			if (currentLayer) {
+				if (currentLayer.getBounds().contains(e.latlng)) {
+					var lat = e.latlng.lat.toFixed(6);
+					var lng = e.latlng.lng.toFixed(6);
+
+					document.getElementById('latitude').value = lat;
+					document.getElementById('longitude').value = lng;
+
+					marker.setLatLng(e.latlng);
+				} else {
+					alert(`Titik berada di luar wilayah ${currentLayer.feature.properties.NAMOBJ}.`);
+				}
+			} else {
+				alert('Pilih kecamatan terlebih dahulu.');
+			}
+		});
+
+		L.Control.geocoder().addTo(map);
 
 		L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 			maxZoom: 19,
 			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 		}).addTo(map);
-
-		L.Control.geocoder().addTo(map);
-
-		map.on('click', function(e) {
-			let lat = e.latlng.lat.toFixed(6);
-			let lng = e.latlng.lng.toFixed(6);
-
-			document.getElementById('latitude').value = lat;
-			document.getElementById('longitude').value = lng;
-
-			marker.setLatLng(e.latlng);
-		});
 	</script>
 @endpush

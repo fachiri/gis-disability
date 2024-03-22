@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('bantuans', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->unique();
-            $table->string('status', 8)->default('DIAJUKAN');
+            $table->string('status', 9)->default('DIAJUKAN');
             $table->string('jenis');
             $table->string('detail');
             $table->string('bukti')->nullable();

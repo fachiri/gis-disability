@@ -36,17 +36,14 @@
 							@foreach ($relawan as $item)
 								<tr>
 									<td>{{ $loop->iteration }}</td>
-									<td>{{ $item->district->name }}</td>
 									<td>{{ $item->user->name }}</td>
+									<td>{{ $item->district->name }}</td>
 									<td>{{ formatPhone($item->user->phone) }}</td>
 									<td style="white-space: nowrap">
 										<a href="{{ route('dashboard.master.relawan.show', $item->uuid) }}" class="btn btn-success btn-sm">
 											<i class="bi bi-list-ul"></i>
+											Detail
 										</a>
-										<a href="{{ route('dashboard.master.relawan.edit', $item->uuid) }}" class="btn btn-warning btn-sm">
-											<i class="bi bi-pencil-square"></i>
-										</a>
-										<x-form.delete :id="$item->uuid" :action="route('dashboard.master.relawan.destroy', $item->uuid)" :label="$item->nama" />
 									</td>
 								</tr>
 							@endforeach

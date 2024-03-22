@@ -48,4 +48,9 @@ class Relawan extends Model
     {
         return $this->hasMany(Activity::class);
     }
+
+    public function penyandang(): HasMany
+    {
+        return $this->hasMany(Penyandang::class);
+    }
 }

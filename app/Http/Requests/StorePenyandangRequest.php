@@ -14,6 +14,7 @@ class StorePenyandangRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'relawan_id' => 'required',
             'nama' => 'required|string|max:255',
             'no_induk_disabilitas' => 'required|string|max:255',
             'nik' => 'required|string|max:16',
@@ -40,6 +41,7 @@ class StorePenyandangRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'relawan_id.required' => 'Mohon pilih Relawan.',
             'nama.required' => 'Mohon isi kolom Nama.',
             'no_induk_disabilitas.required' => 'Mohon isi kolom Nomor Induk Disabilitas.',
             'nik.required' => 'Mohon isi kolom NIK.',

@@ -6,6 +6,7 @@ use App\Http\Requests\StorePenyandangRequest;
 use App\Http\Requests\UpdatePenyandangRequest;
 use App\Models\District;
 use App\Models\Penyandang;
+use App\Models\Relawan;
 
 class PenyandangController extends Controller
 {
@@ -14,7 +15,7 @@ class PenyandangController extends Controller
         $query = Penyandang::query();
 
         if (auth()->user()->isRelawan()) {
-            $query->where('district_id', auth()->user()->relawan->district->id);
+            $query->where('relawan_id', auth()->user()->relawan->id);
         }
 
         $penyandang = $query->get();
@@ -25,8 +26,9 @@ class PenyandangController extends Controller
     public function create()
     {
         $districts = District::all();
+        $relawan = Relawan::all();
 
-        return view('pages.dashboard.master.penyandang.create', compact('districts'));
+        return view('pages.dashboard.master.penyandang.create', compact('districts', 'relawan'));
     }
 
     public function store(StorePenyandangRequest $request)
@@ -37,6 +39,7 @@ class PenyandangController extends Controller
             $foto_kk = $request->file('foto_kk')->store('public/foto_kk');
 
             Penyandang::create([
+                'relawan_id' => $request->relawan_id,
                 'district_id' => $request->district_id,
                 'nama' => $request->nama,
                 'no_induk_disabilitas' => $request->no_induk_disabilitas,
@@ -72,7 +75,9 @@ class PenyandangController extends Controller
 
     public function edit(Penyandang $penyandang)
     {
-        return view('pages.dashboard.master.penyandang.edit', compact('penyandang'));
+        $districts = District::all();
+
+        return view('pages.dashboard.master.penyandang.edit', compact('penyandang', 'districts'));
     }
 
     public function update(UpdatePenyandangRequest $request, Penyandang $penyandang)
@@ -101,6 +106,7 @@ class PenyandangController extends Controller
             $penyandang->usaha = $request->usaha;
             $penyandang->kontak = $request->kontak;
             $penyandang->alamat = $request->alamat;
+            $penyandang->district_id = $request->district_id;
             $penyandang->latitude = $request->latitude;
             $penyandang->longitude = $request->longitude;
             $penyandang->jenis_disabilitas = $request->jenis_disabilitas;

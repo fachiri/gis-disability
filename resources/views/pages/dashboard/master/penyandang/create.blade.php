@@ -15,6 +15,12 @@
 						@csrf
 						<div class="mb-5">
 							<h5>Personal</h5>
+							<x-form.select name="relawan_id" label="Relawan" :options="$relawan->map(function ($item) {
+							    return (object) [
+							        'label' => $item->user->name,
+							        'value' => $item->id,
+							    ];
+							})" />
 							<x-form.input type="text" name="nama" label="Nama Penyandang" />
 							<x-form.input type="text" name="no_induk_disabilitas" label="Nomor Induk Disabilitas" />
 							<x-form.input type="text" name="nik" label="Nomor Induk Kependudukan" maxlength="16" />

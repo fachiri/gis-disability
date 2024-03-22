@@ -156,16 +156,15 @@
 								<tr>
 									<td>{{ $loop->iteration }}</td>
 									<td>{{ $item->penyandang->nama }}</td>
-									<td>{{ $item->status }}</td>
+									<td>
+										<x-badge.bantuan-status :status="$item->status" />	
+									</td>
 									<td>{{ $item->jenis }}</td>
 									<td style="white-space: nowrap">
-										<a href="{{ route('bantuan.show', $item->uuid) }}" class="btn btn-success btn-sm">
+										<a href="{{ route('dashboard.bantuan.show', $item->uuid) }}" class="btn btn-success btn-sm">
 											<i class="bi bi-list-ul"></i>
+											Detail
 										</a>
-										<a href="{{ route('bantuan.edit', $item->uuid) }}" class="btn btn-warning btn-sm">
-											<i class="bi bi-pencil-square"></i>
-										</a>
-										<x-form.delete :id="$item->uuid" :action="route('bantuan.destroy', $item->uuid)" :label="$item->nama" />
 									</td>
 								</tr>
 							@endforeach

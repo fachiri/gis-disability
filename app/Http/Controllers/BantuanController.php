@@ -29,11 +29,12 @@ class BantuanController extends Controller
 
     public function create()
     {
-        $query = Penyandang::query();
-
-        if (auth()->user()->isRelawan()) {
-            $query->where('district_id', auth()->user()->relawan->district->id);
+        if (!auth()->user()->isRelawan()) {
+            return redirect()->back()->withErrors('Akses tidak sah.');
         }
+
+        $query = Penyandang::query();
+        $query->where('relawan_id', auth()->user()->relawan->id);
 
         $penyandang = $query->get();
 
@@ -43,7 +44,7 @@ class BantuanController extends Controller
     public function store(StoreBantuanRequest $request)
     {
         try {
-            Bantuan::create(
+            $bantuan = Bantuan::create(
                 $request->only([
                     'penyandang_id', 'jenis', 'detail'
                 ]) + [
@@ -51,7 +52,7 @@ class BantuanController extends Controller
                 ]
             );
 
-            return redirect()->back()->with('success', 'Data berhasil ditambahkan.');
+            return redirect()->route('dashboard.bantuan.show', $bantuan->uuid)->with('success', 'Data berhasil ditambahkan.');
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors($th->getMessage())->withInput();
         }
@@ -64,12 +65,16 @@ class BantuanController extends Controller
 
     public function edit(Bantuan $bantuan)
     {
+        $this->authorize('edit', $bantuan);
+
         return view('pages.dashboard.bantuan.edit', compact('bantuan'));
     }
 
     public function update(UpdateBantuanRequest $request, Bantuan $bantuan)
     {
         try {
+            $this->authorize('update', $bantuan);
+
             if ($request->hasFile('bukti')) {
                 Storage::delete('public/bukti/' . $bantuan->bukti);
                 $bantuan->bukti = basename($request->file('bukti')->store('public/bukti'));
@@ -89,9 +94,35 @@ class BantuanController extends Controller
     public function destroy(Bantuan $bantuan)
     {
         try {
+            $this->authorize('delete', $bantuan);
+
             $bantuan->delete();
 
             return redirect()->route('dashboard.bantuan.index')->with('success', 'Data berhasil dihapus.');
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors($th->getMessage())->withInput();
+        }
+    }
+
+    public function approve(Bantuan $bantuan)
+    {
+        try {
+            $bantuan->status = 'DISETUJUI';
+            $bantuan->save();
+
+            return redirect()->back()->with('success', 'Data berhasil diperbarui.');
+        } catch (\Throwable $th) {
+            return redirect()->back()->withErrors($th->getMessage())->withInput();
+        }
+    }
+
+    public function decline(Bantuan $bantuan)
+    {
+        try {
+            $bantuan->status = 'DITOLAK';
+            $bantuan->save();
+
+            return redirect()->back()->with('success', 'Data berhasil diperbarui.');
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors($th->getMessage())->withInput();
         }

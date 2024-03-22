@@ -12,7 +12,23 @@
 			<div class="card">
 				<div class="card-body py-4-5 px-4">
 					<div class="d-flex justify-content-end mb-4 gap-2">
-						@if ($bantuan->status === 'DIAJUKAN')
+						@if (auth()->user()->isAdmin() && $bantuan->status === 'DIAJUKAN')
+							<x-modal.confirm route="{{ route('dashboard.bantuan.approve', $bantuan->uuid) }}" method="PATCH" id="bantuan-disetujui" title="Konfirmasi" color="success">
+								<x-slot:btn>
+									<i class="bi bi-check-circle"></i>
+									Setujui
+								</x-slot>
+								Tekan <b>KONFIRMASI</b> untuk menyetujui pengajuan Bantuan
+							</x-modal.confirm>
+							<x-modal.confirm route="{{ route('dashboard.bantuan.decline', $bantuan->uuid) }}" method="PATCH" id="bantuan-ditolak" title="Konfirmasi" color="danger">
+								<x-slot:btn>
+									<i class="bi bi-x-circle"></i>
+									Tolak
+								</x-slot>
+								Tekan <b>KONFIRMASI</b> untuk menolak pengajuan Bantuan
+							</x-modal.confirm>
+						@endif
+						@if (auth()->user()->isRelawan() && $bantuan->status === 'DISETUJUI')
 							<x-modal.confirm route="{{ route('dashboard.bantuan.received', $bantuan->uuid) }}" method="PATCH" id="bantuan-diterima" title="Konfirmasi" enctype="multipart/form-data">
 								<x-slot:btn>
 									<i class="bi bi-check-circle"></i>
@@ -23,16 +39,22 @@
 								<x-form.input type="file" name="bukti" label="Bukti / Dokumentasi" />
 							</x-modal.confirm>
 						@endif
-						<a href="{{ route('dashboard.bantuan.edit', $bantuan->uuid) }}" class="btn btn-warning btn-sm">
-							<i class="bi bi-pencil-square"></i>
-							Edit
-						</a>
-						<x-form.delete :id="$bantuan->uuid" :action="route('dashboard.bantuan.destroy', $bantuan->uuid)" :label="'Bantuan ' . $bantuan->jenis . ' yang diterima oleh ' . $bantuan->penyandang->nama" text="Hapus" />
+						@if (auth()->user()->isRelawan() && $bantuan->status === 'DIAJUKAN')
+							<a href="{{ route('dashboard.bantuan.edit', $bantuan->uuid) }}" class="btn btn-warning btn-sm">
+								<i class="bi bi-pencil-square"></i>
+								Edit
+							</a>
+						@endif
+						@if (auth()->user()->isRelawan() && ($bantuan->status === 'DIAJUKAN' || $bantuan->status === 'DITOLAK'))
+							<x-form.delete :id="$bantuan->uuid" :action="route('dashboard.bantuan.destroy', $bantuan->uuid)" :label="'Bantuan ' . $bantuan->jenis . ' yang diterima oleh ' . $bantuan->penyandang->nama" text="Hapus" />
+						@endif
 					</div>
 					<table class="table-striped table">
 						<tr>
 							<th>Status</th>
-							<td>{{ $bantuan->status }}</td>
+							<td>
+								<x-badge.bantuan-status :status="$bantuan->status" />
+							</td>
 						</tr>
 						<tr>
 							<th>Nama Penerima</th>
@@ -46,14 +68,16 @@
 							<th>Detail</th>
 							<td>{{ $bantuan->detail }}</td>
 						</tr>
-						@if ($bantuan->status === 'DITERIMA')
-							<tr>
-								<th>Bukti</th>
-								<td>
+						<tr>
+							<th>Bukti Penerimaan</th>
+							<td>
+								@if ($bantuan->bukti)
 									<a href="{{ asset('storage/bukti/' . $bantuan->bukti) }}">{{ $bantuan->bukti }}</a>
-								</td>
-							</tr>
-						@endif
+								@else
+									<span class="text-danger">Belum ada bukti</span>	
+								@endif
+							</td>
+						</tr>
 					</table>
 				</div>
 			</div>

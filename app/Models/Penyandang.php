@@ -32,7 +32,8 @@ class Penyandang extends Model
         'foto_diri',
         'foto_ktp',
         'foto_kk',
-        'district_id'
+        'district_id',
+        'relawan_id',
     ];
 
     public function getRouteKeyName(): string
@@ -59,5 +60,10 @@ class Penyandang extends Model
     public function district(): BelongsTo
     {
         return $this->belongsTo(District::class);
+    }
+
+    public function relawan(): BelongsTo
+    {
+        return $this->belongsTo(Relawan::class);
     }
 }

@@ -34,7 +34,9 @@ Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(func
     Route::resource('/persebaran', PersebaranController::class)->names('persebaran');
     Route::resource('/bantuan', BantuanController::class)->names('bantuan');
     Route::resource('/activity', ActivityController::class)->names('activity');
-    Route::patch('/bantuan/{bantuan}/received', [BantuanController::class, 'received'])->name('bantuan.received');
+    Route::patch('/bantuan/{bantuan}/approve', [BantuanController::class, 'approve'])->middleware(['roles:' . UserRole::ADMIN])->name('bantuan.approve');
+    Route::patch('/bantuan/{bantuan}/decline', [BantuanController::class, 'decline'])->middleware(['roles:' . UserRole::ADMIN])->name('bantuan.decline');
+    Route::patch('/bantuan/{bantuan}/received', [BantuanController::class, 'received'])->middleware(['roles:' . UserRole::RELAWAN])->name('bantuan.received');
     Route::prefix('security')->name('security.')->middleware([])->group(function () {
         Route::get('/', [SecurityController::class, 'index'])->name('index');
         Route::put('/update/password', [SecurityController::class, 'update_password'])->name('update.password');
